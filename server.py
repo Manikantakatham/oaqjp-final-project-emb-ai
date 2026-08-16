@@ -1,10 +1,23 @@
+"""
+This module implements a Flask web application for emotion detection.
+It exposes an endpoint that analyzes text and returns emotion scores
+along with the dominant emotion.
+"""
+
 from flask import Flask, render_template, request
 from EmotionDetection.emotion_detection import emotion_detector
 
 app = Flask("Emotion Detector")
 
+
 @app.route("/emotionDetector")
 def emot_detector():
+    """
+    Analyze the text passed as a query parameter and return
+    a formatted string describing the detected emotions and
+    the dominant emotion. Returns an error message if the
+    input text is invalid.
+    """
     text_to_analyze = request.args.get('textToAnalyze')
     response = emotion_detector(text_to_analyze)
 
@@ -24,9 +37,12 @@ def emot_detector():
         f"The dominant emotion is {dominant_emotion}."
     )
 
+
 @app.route("/")
 def render_index_page():
+    """Render the main index page of the application."""
     return render_template('index.html')
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
